@@ -32,7 +32,7 @@ export default defineConfig({
       provider: fontProviders.googleicons(),
       options: {
         experimental: {
-          glyphs: ['storefront', 'schedule', 'expand_more', 'inventory_2', 'payments', 'event_available', 'admin_panel_settings', 'person', 'key', 'verified_user', 'router', 'task_alt', 'smartphone', 'arrow_outward'],
+          glyphs: ['storefront', 'schedule', 'expand_more', 'inventory_2', 'payments', 'event_available', 'admin_panel_settings', 'person', 'key', 'verified_user', 'router', 'task_alt', 'smartphone', 'arrow_outward', 'dark_mode', 'light_mode'],
         },
       },
     },

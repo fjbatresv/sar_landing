@@ -1,0 +1,23 @@
+[
+  {
+    "currencyToCompanyId": 1,
+    "currency": {
+      "currencyId": 1,
+      "currencyName": "US Dollar",
+      "currencySymbol": "$",
+      "currencyCode": "USD"
+    },
+    "localCurrency": true,
+    "needDenomination": true,
+    "deleteDate": "",
+    "exchangeRate": {
+      "exchangeRateId": 1,
+      "companyId": 1,
+      "sourceCurrencyId": 1,
+      "targetCurrencyId": 1,
+      "exchangeRateValue": 1,
+      "validFrom": "2026-01-01",
+      "deleteDate": ""
+    }
+  }
+]

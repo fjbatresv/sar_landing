@@ -47,6 +47,7 @@ const jsonld = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={og} />
     <meta name="twitter:image:alt" content="Restaurant operations platform architecture" />
+    <script is:inline>try{document.documentElement.dataset.theme=localStorage.getItem('sar-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch{document.documentElement.dataset.theme='light'}</script>
     <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
     <Font cssVariable="--font-body" preload={[{ subset: 'latin', style: 'normal', weight: 400 }]} />
     <Font cssVariable="--font-display" preload={[{ subset: 'latin', style: 'normal', weight: 700 }]} />
