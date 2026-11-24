@@ -1,13 +1,17 @@
 # Design tokens and critique
 
-## Pass 1 — service-day system
+## Pass 1 — product continuity
 
-- Steel `#E6E9E8` canvas, paper `#FAFAF7` surfaces, ink `#17201D` text, slate `#56615D` secondary text, line green `#1F6F50`, ticket amber `#E8A33D` for timeline marks and the primary contact action. The CTA always uses `#17201D` text.
-- Bricolage Grotesque variable display face and Public Sans body face, supplied through Astro's self-hosted Fonts API. A left-aligned 72rem column uses 16/18/24/32/48/72px sizes and readable line lengths.
-- A single service-day timeline carries the expressive visual weight. Events connect to architecture sections. On small screens the timeline turns vertical; reduced-motion disables its loading sweep.
-- Decision rows use a decision/trade-off split. Other content stays editorial, with thin rules, an accessible SVG architecture diagram, visible focus, and AA contrast.
-- Dark mode uses tonal steel/paper and green variants while preserving amber with ink text.
+- The landing uses the app’s navy `#141633`, indigo `#666CFF`, pale page surface `#F7F7F9`, white panels, and muted slate `#64748B`. Active elements use soft indigo `#F0F0FF`, `#C2C4FF`, and `#A3A7FF`.
+- Status colors follow the application: sky `#16B1FF`, green `#3FA607`, amber `#FDB428`, and red `#E60000`. A label, icon, or step number accompanies each colored state.
+- Barlow is the body face. Barlow Semi Condensed carries headings. Astro’s Fonts API downloads and serves both from the site build. Material Symbols Outlined uses an Astro Google Icons subset containing only the glyphs on the page.
+- Large dashboard-like panels use a 24px radius; controls, rows, and compact panels use 12px. The site uses an editorial 72rem column and keeps the app’s navy prominent in the hero and contact close.
+- The service day remains the main visual idea. Nine details reveal operational context and its system response, with native disclosure behavior and a small focus-to-open enhancement. The timeline becomes a vertical list on narrow screens.
+- The architecture diagram is static SVG with separate synchronous and asynchronous paths. The product stories use HTML lists and steps as a readable alternative. No diagram or decorative motion is needed for comprehension.
+- Reduced-motion preferences remove animation and smooth scrolling. Keyboard focus is visible. The page adds no client framework or icon package.
 
-## Pass 2 — critique against the brief
+## Pass 2 — critique against the updated brief
 
-The timeline directly represents restaurant operations and stays the only animated graphic. The two-column trade-off rows avoid repetitive cards. Links and focus are visible, and mobile changes the timeline's geometry instead of shrinking it. Slate on steel is approximately 5.4:1; green on paper is above 5:1. Amber is reserved for marks and the main CTA and always pairs with ink. Motion is decorative and removed for reduced motion. The wide layout caps at 72rem; the title scale is responsive. No all-caps labels, emoji icons, or arrow-button copy.
+The same navy, type, rounded white panels, and Material Symbols family link the case study to the application. The product sections vary their panel size and border treatment instead of repeating one card shape. Product capabilities, flows, engineering practices, and personal contributions have distinct information structures. The public screenshots sit in a browser or device frame on the same pale background.
+
+Indigo is used for links and controls; dark indigo text is used where a smaller label needs more contrast. State colors never carry meaning on their own. The diagram can scroll horizontally without changing its labels or hiding the text alternative. Responsive rules cover 375, 768, 1024, and 1440px. The timeline opens by pointer or keyboard, and reduced motion disables the remaining transitions.

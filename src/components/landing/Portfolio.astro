@@ -1,19 +1,193 @@
 ---
-import { AUTHOR_EMAIL, AUTHOR_URL, type Lang } from '../../data/landing';
+import { AUTHOR_EMAIL, AUTHOR_URL, type Lang, type LandingCopy } from '../../data/landing';
+import ArchitectureDiagram from './ArchitectureDiagram.astro';
 import ServiceDay from './ServiceDay.astro';
-const { lang, data } = Astro.props as { lang: Lang; data: any };
+
+const { lang, data } = Astro.props as { lang: Lang; data: LandingCopy };
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const navIds = ['day', 'product', 'architecture', 'flows', 'work', 'docs'];
+const icons = ['inventory_2', 'payments', 'event_available', 'admin_panel_settings'];
+const requestIcons = ['person', 'key', 'verified_user', 'router', 'task_alt'];
+const staticScreens = ['events', 'cash-reconciliation', 'recipes', 'safe-control'];
 ---
+
 <a class="skip" href="#main">{lang === 'es' ? 'Saltar al contenido' : 'Skip to content'}</a>
-<header class="wrap nav"><a class="wordmark" href={base}>SAR<span> / operations</span></a><nav aria-label="Primary"><a href="#day">{data.nav[0]}</a><a href="#architecture">{data.nav[1]}</a><a href="#decisions">{data.nav[2]}</a><a href={`${base}docs/`}>{data.nav[3]}</a><a href={lang === 'es' ? base : `${base}es/`} lang={lang === 'es' ? 'en' : 'es'}>{lang === 'es' ? 'EN' : 'ES'}</a></nav><a class="button small" href={`mailto:${AUTHOR_EMAIL}`}>{data.cta}</a></header>
+
+<header class="site-header wrap">
+  <a class="wordmark" href={base} aria-label="SAR operations home"><span class="brand-mark" aria-hidden="true">S</span><span>SAR <small>{lang === 'es' ? 'operaciones' : 'operations'}</small></span></a>
+  <nav aria-label={lang === 'es' ? 'Principal' : 'Primary'}>
+    {data.nav.map((item, index) => <a href={index === 5 ? `${base}docs/` : `#${navIds[index]}`}>{item}</a>)}
+  </nav>
+  <a class="button button-small" href={`mailto:${AUTHOR_EMAIL}`}>{lang === 'es' ? 'Hablemos' : 'Let’s talk'}</a>
+  <a class="language-link" href={lang === 'es' ? base : `${base}es/`} lang={lang === 'es' ? 'en' : 'es'}>{lang === 'es' ? 'EN' : 'ES'}</a>
+</header>
+
 <main id="main">
-<section class="hero wrap"><div><p class="eyebrow">{lang === 'es' ? 'Caso de estudio · Plataforma de operaciones' : 'Case study · Operations platform'}</p><h1>{data.hero[0]}<br />{data.hero[1]}</h1><p class="lead">{data.intro}</p><p class="actions"><a class="button" href={`mailto:${AUTHOR_EMAIL}`}>{data.cta}</a><a class="text-link" href="#architecture">{lang === 'es' ? 'Ver la arquitectura' : 'Explore the architecture'}</a></p></div><div class="hero-note"><span class="open-dot"></span><strong>{lang === 'es' ? 'Sistema en operación' : 'Operations in motion'}</strong><p>06:00 — 24:00</p><span class="note-rule"></span><span>{lang === 'es' ? 'Conteo · Venta · Compra · Cierre' : 'Count · Sell · Receive · Close'}</span></div></section>
-<ServiceDay title={data.day} events={data.events} />
-<section class="wrap section split" id="problem"><div><p class="eyebrow">{lang === 'es' ? 'Lo que había que resolver' : 'The operating brief'}</p><h2>{lang === 'es' ? 'Cada jornada exige decisiones rápidas y datos confiables.' : 'Every shift depends on quick decisions and reliable data.'}</h2></div><p class="body-copy">{data.problem}</p></section>
-<section class="architecture section" id="architecture"><div class="wrap"><p class="eyebrow">{lang === 'es' ? 'Cómo se conecta' : 'How it connects'}</p><h2>{lang === 'es' ? 'Tres formas de construir un solo sistema.' : 'Three ways of building one system.'}</h2><p class="body-copy">{data.architecture}</p><figure class="diagram"><svg viewBox="0 0 1000 240" role="img" aria-labelledby="diagram-title diagram-desc"><title id="diagram-title">{lang === 'es' ? 'Vista de arquitectura' : 'Architecture overview'}</title><desc id="diagram-desc">Angular frontend reaches domain services and event driven functions on AWS, provisioned by Terraform.</desc><path d="M180 120H355M595 120H665M865 120H920" stroke="currentColor" stroke-width="3" stroke-dasharray="7 8"/><g class="node"><rect x="20" y="58" width="160" height="124" rx="4"/><text x="100" y="110">Angular 19</text><text x="100" y="140">Nx frontend</text></g><g class="node"><rect x="355" y="58" width="240" height="124" rx="4"/><text x="475" y="110">Java · Spring Boot</text><text x="475" y="140">ECS Fargate</text></g><g class="node node-event"><rect x="665" y="58" width="200" height="124" rx="4"/><text x="765" y="110">Lambda</text><text x="765" y="140">Events · Queues</text></g><text class="infra" x="500" y="220">AWS · Terraform · API Gateway · CloudFront</text></svg><figcaption>{lang === 'es' ? 'Diagrama simplificado de los límites principales del sistema.' : 'Simplified view of the system’s main boundaries.'}</figcaption></figure></div></section>
-<section class="wrap section" id="stack"><p class="eyebrow">{lang === 'es' ? 'Plataforma' : 'Platform'}</p><h2>{lang === 'es' ? 'Cada herramienta tiene su lugar.' : 'Each tool has a job.'}</h2><dl class="stack">{data.stack.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section>
-<section class="section decisions" id="decisions"><div class="wrap"><p class="eyebrow">{lang === 'es' ? 'Decisiones y trade-offs' : 'Decisions and trade-offs'}</p><h2>{lang === 'es' ? 'Las decisiones técnicas también tienen costo.' : 'Every technical choice has a cost.'}</h2><dl>{data.decisions.map(([title, body]) => <div><dt>{title}</dt><dd>{body}</dd></div>)}</dl></div></section>
-<section class="wrap section role"><div><p class="eyebrow">{lang === 'es' ? 'Mi contribución' : 'My contribution'}</p><h2>{lang === 'es' ? 'Construido en equipo.' : 'Built as a team.'}</h2></div><p class="body-copy">{data.role}</p></section>
-<section class="wrap section product"><div class="gallery-heading"><p class="eyebrow">{lang === 'es' ? 'Vistas del producto' : 'Product views'}</p><h2>{data.gallery}</h2><p class="body-copy">{lang === 'es' ? 'Capturas realizadas con una sesión y respuestas ficticias.' : 'Captured with a fictional session and mocked API responses.'}</p></div><div class="gallery-grid">{data.screens.map(([label, key]) => <figure><img src={`${base}assets/screens/${key}-desktop.webp`} width="1440" height="900" loading="lazy" alt={`${lang === 'es' ? 'Captura ficticia de' : 'Fictional'} ${label}`} /><figcaption>{label}</figcaption></figure>)}</div></section>
-<section class="contact"><div class="wrap contact-inner"><p class="eyebrow">{lang === 'es' ? 'Contacto' : 'Contact'}</p><h2>{data.contact}</h2><a class="button" href={`mailto:${AUTHOR_EMAIL}`}>{data.email}</a><a class="text-link" href={AUTHOR_URL}>{AUTHOR_URL.replace('https://', '')}</a><p><a href={`${base}docs/`}>{data.docs}</a></p></div></section></main>
-<footer class="wrap footer"><p>{data.footer}</p><a href={AUTHOR_URL}>fjbatresv.com</a></footer>
+  <section class="hero">
+    <div class="hero-inner wrap">
+      <div class="hero-copy">
+        <p class="hero-kicker"><span class="material-symbols-outlined" aria-hidden="true">storefront</span>{lang === 'es' ? 'Caso de estudio de plataforma operativa' : 'Operations platform case study'}</p>
+        <h1>{data.hero[0]}<br /><span>{data.hero[1]}</span></h1>
+        <p class="hero-lead">{data.intro}</p>
+        <div class="hero-actions">
+          <a class="button" href={`mailto:${AUTHOR_EMAIL}`}>{lang === 'es' ? 'Hablemos de tu proyecto' : 'Talk about your project'}</a>
+          <a class="hero-secondary" href="#architecture">{lang === 'es' ? 'Explorar arquitectura' : 'Explore the architecture'} <span aria-hidden="true">↘</span></a>
+        </div>
+      </div>
+      <aside class="hero-note">
+        <div class="hero-note-top"><span class="material-symbols-outlined" aria-hidden="true">schedule</span><span>{lang === 'es' ? 'Una jornada, conectada' : 'One connected service day'}</span></div>
+        <div class="hero-clock"><span>06:00</span><span class="clock-line"></span><span>24:00</span></div>
+        <p>{data.heroNote}</p>
+      </aside>
+    </div>
+  </section>
+
+  <ServiceDay lang={lang} title={data.dayTitle} intro={data.dayIntro} moments={data.moments} />
+
+  <section class="product-section section-pad" id="product">
+    <div class="wrap">
+      <div class="section-heading section-heading-wide">
+        <p class="section-context">{lang === 'es' ? 'Operación diaria' : 'Daily operations'}</p>
+        <h2>{data.productTitle}</h2>
+        <p>{data.productIntro}</p>
+      </div>
+      <div class="family-grid">
+        {data.families.map((family, index) => (
+          <article class={`family family-${index + 1}`}>
+            <div class="family-icon"><span class="material-symbols-outlined" aria-hidden="true">{icons[index]}</span></div>
+            <div class="family-copy"><h3>{family.title}</h3><p>{family.summary}</p></div>
+            <ul>{family.capabilities.map((capability) => <li>{capability}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="metrics-band" aria-label={lang === 'es' ? 'Cifras del proyecto' : 'Project scale'}>
+    <div class="wrap metrics-grid">
+      {data.metrics.map((metric) => <div class="metric"><strong>{metric.value}</strong><span>{metric.label}</span></div>)}
+    </div>
+  </section>
+
+  <section class="architecture-section section-pad" id="architecture">
+    <div class="wrap">
+      <div class="section-heading section-heading-wide">
+        <p class="section-context">{lang === 'es' ? 'Límites y comunicaciones' : 'Boundaries and communication'}</p>
+        <h2>{data.architectureTitle}</h2>
+        <p>{data.architectureIntro}</p>
+      </div>
+      <ArchitectureDiagram lang={lang} data={data} />
+      <div class="architecture-notes">
+        <div class="architecture-list-block">
+          <h3>{data.diagramListTitle}</h3>
+          <ul>{data.diagramList.map((item) => <li>{item}</li>)}</ul>
+        </div>
+        <div class="request-block">
+          <h3>{data.requestTitle}</h3>
+          <ol class="request-steps">
+            {data.requestSteps.map((step, index) => <li><span class="request-number">0{index + 1}</span><span class="material-symbols-outlined" aria-hidden="true">{requestIcons[index]}</span><span>{step}</span></li>)}
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="flows-section section-pad" id="flows">
+    <div class="wrap">
+      <div class="section-heading">
+        <p class="section-context">{lang === 'es' ? 'De la operación al resultado' : 'From operation to outcome'}</p>
+        <h2>{data.flowsTitle}</h2>
+      </div>
+      <div class="flow-list">
+        {data.flows.map((flow, flowIndex) => (
+          <article class="flow-card">
+            <div class="flow-heading"><span class="flow-index">0{flowIndex + 1}</span><div><h3>{flow.title}</h3><p>{flow.intro}</p></div></div>
+            <ol class="flow-steps">{flow.steps.map((step, index) => <li><span class="flow-step-index">{index + 1}</span><div><strong>{step.title}</strong><p>{step.detail}</p></div></li>)}</ol>
+            <a class="inline-link" href={`#screen-${flow.id === 'inventory-close' ? 'daily-close' : flow.id === 'projection-approval' ? 'projections' : 'cash-reconciliation'}`}>{lang === 'es' ? 'Ver captura relacionada' : 'See the related screen'} <span aria-hidden="true">↗</span></a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="decisions-section section-pad" id="decisions">
+    <div class="wrap">
+      <div class="section-heading section-heading-wide">
+        <p class="section-context">{lang === 'es' ? 'Arquitectura con consecuencias' : 'Architecture with consequences'}</p>
+        <h2>{data.decisionsTitle}</h2>
+        <p>{data.decisionsIntro}</p>
+      </div>
+      <div class="decision-table">
+        <div class="decision-header"><span>{lang === 'es' ? 'Contexto' : 'Context'}</span><span>{lang === 'es' ? 'Decisión' : 'Decision'}</span><span>Trade-off</span></div>
+        {data.decisions.map((decision) => <article class="decision-row"><h3>{decision.title}</h3><p>{decision.context}</p><p>{decision.choice}</p><p>{decision.tradeoff}</p></article>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="quality-section section-pad">
+    <div class="wrap quality-layout">
+      <div class="section-heading">
+        <p class="section-context">{lang === 'es' ? 'Cómo se entrega' : 'How it ships'}</p>
+        <h2>{data.qualityTitle}</h2>
+        <p>{data.qualityIntro}</p>
+      </div>
+      <div class="quality-list">{data.qualityItems.map((item) => <article><span class="material-symbols-outlined" aria-hidden="true">task_alt</span><div><h3>{item.title}</h3><p>{item.detail}</p></div></article>)}</div>
+    </div>
+  </section>
+
+  <section class="work-section section-pad" id="work">
+    <div class="wrap">
+      <div class="section-heading section-heading-wide">
+        <p class="section-context">{lang === 'es' ? 'Trabajo en equipo' : 'Team delivery'}</p>
+        <h2>{data.workTitle}</h2>
+        <p>{data.workIntro}</p>
+      </div>
+      <div class="work-grid">{data.workAreas.map((area, index) => <article class={`work-area work-area-${index + 1}`}><span class="work-scope">{area.scope}</span><h3>{area.title}</h3><p>{area.examples}</p></article>)}</div>
+    </div>
+  </section>
+
+  <section class="gallery-section section-pad" id="gallery">
+    <div class="wrap">
+      <div class="section-heading section-heading-wide">
+        <p class="section-context">{lang === 'es' ? 'Capturas con datos ficticios' : 'Screens with fictional data'}</p>
+        <h2>{data.galleryTitle}</h2>
+        <p>{data.galleryIntro}</p>
+      </div>
+      <div class="gallery-grid">
+        {data.screens.map((screen) => (
+          <figure class="product-screen" id={`screen-${screen.key}`}>
+            <div class="browser-frame">
+              <div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span><small>{lang === 'es' ? 'Vista de producto' : 'Product view'}</small></div>
+              <img src={`${base}assets/screens/${screen.key}-desktop.webp`} width="1440" height="900" loading="lazy" alt={`${lang === 'es' ? 'Captura ficticia' : 'Fictional screenshot'}: ${screen.title}`} />
+            </div>
+            <figcaption><h3>{screen.title}</h3><p>{screen.description}</p><small>{screen.decision}</small></figcaption>
+            <details class="mobile-capture">
+              <summary><span class="material-symbols-outlined" aria-hidden="true">smartphone</span>{data.mobileLabel}</summary>
+              <div class="device-frame"><img src={`${base}assets/screens/${screen.key}-mobile.webp`} width="390" height="844" loading="lazy" alt={`${lang === 'es' ? 'Captura móvil ficticia' : 'Fictional mobile screenshot'}: ${screen.title}`} /></div>
+            </details>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="services-section section-pad">
+    <div class="wrap services-layout">
+      <div class="section-heading">
+        <p class="section-context">{lang === 'es' ? 'Colaboración freelance' : 'Freelance collaboration'}</p>
+        <h2>{data.servicesTitle}</h2>
+        <p>{data.contactIntro}</p>
+      </div>
+      <ul class="services-list">{data.contactServices.map((service) => <li><span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>{service}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="contact-section">
+    <div class="wrap contact-inner">
+      <div><p class="contact-kicker">{lang === 'es' ? '¿Tienes un reto parecido?' : 'Working on a similar challenge?'}</p><h2>{data.contactTitle}</h2><p>{data.contactIntro}</p></div>
+      <div class="contact-actions"><a class="button button-light" href={`mailto:${AUTHOR_EMAIL}`}>{data.contactCta}</a><a href={AUTHOR_URL}>{lang === 'es' ? 'Más sobre mi trabajo' : 'More about my work'} <span aria-hidden="true">↗</span></a><a class="docs-link" href={`${base}docs/`}>{data.docs}</a></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer wrap"><p>{data.footer}</p><a href={AUTHOR_URL}>fjbatresv.com</a></footer>

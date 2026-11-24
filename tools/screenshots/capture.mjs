@@ -16,7 +16,6 @@ const screens = [
   ['sales', '/sales/point-of-sale/consolidated'],
   ['employees', '/employees'],
 ];
-const emptyList = await readFile(path.join(here, 'fixtures/empty-list.json'), 'utf8');
 const languages = await readFile(path.join(here, 'fixtures/languages.json'), 'utf8');
 const permissions = ['HOME', 'DAILY_INVENTORY_VIEW', 'GENERAL_INVENTORY_VIEW', 'SALES_CLOSURE_VIEW', 'SALES_PROJECTIONS_VIEW', 'CONSOLIDATED_VIEW', 'FISCAL_DOCUMENTS_VIEW', 'EMPLOYEE_VIEW'];
 const session = {
@@ -36,16 +35,12 @@ try {
       const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 1, colorScheme: 'light', reducedMotion: 'reduce' });
       await context.addInitScript((data) => localStorage.setItem('appData', JSON.stringify(data)), session);
       const page = await context.newPage();
-      await page.route('**/*', async (route) => {
+      await page.route('https://api.demo.invalid/**', async (route) => {
         const url = new URL(route.request().url());
-        if (url.hostname.endsWith('.demo.invalid')) {
-          const fixture = url.pathname.endsWith('/translations') ? languages : emptyList;
-          return route.fulfill({ status: 200, contentType: 'application/json', body: fixture });
-        }
-        if (url.hostname === '127.0.0.1' || url.hostname === 'localhost') return route.continue();
-        return route.abort();
+        return route.fulfill({ status: 200, contentType: 'application/json', body: url.pathname.endsWith('/translations') ? languages : '[]' });
       });
       await page.goto(new URL(routePath, base).href, { waitUntil: 'networkidle', timeout: 60000 });
+      await page.evaluate(() => document.fonts.ready);
       await page.addStyleTag({ content: 'sarbo-main-nav-bar img[alt="Logo"]{visibility:hidden}' });
       await page.waitForTimeout(1200);
       const temporary = path.join(os.tmpdir(), `sar-${name}-${label}.png`);

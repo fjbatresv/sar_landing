@@ -1,4 +1,5 @@
 ---
+import { Font } from 'astro:assets';
 const route = Astro.locals.starlightRoute;
 const is404 = route.entry.id === '404';
 const head = is404 ? route.head.filter(({ tag, attrs }) => !(tag === 'link' && attrs?.rel === 'canonical')) : route.head;
@@ -14,5 +15,7 @@ const schema = is404 ? null : { '@context': 'https://schema.org', '@graph': [
 ] };
 ---
 {head.map(({ tag: Tag, attrs, content }) => <Tag {...attrs} set:html={content} />)}
+<Font cssVariable="--font-body" />
+<Font cssVariable="--font-display" />
 {is404 && <meta name="robots" content="noindex" />}
 {!is404 && <><meta property="og:image" content={image} /><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" /><meta property="og:image:alt" content="Restaurant operations architecture overview" /><meta name="twitter:card" content="summary_large_image" /><script type="application/ld+json" set:html={JSON.stringify(schema)} /></>}

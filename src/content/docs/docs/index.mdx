@@ -1,21 +1,156 @@
 ---
 title: System overview
-description: A high-level view of a restaurant operations platform and its service boundaries.
+description: A guided overview of the product domains, service boundaries, and engineering workflow.
 ---
 
-## A platform for daily operations
+# System overview
 
-The system supports inventory counts and closeouts, purchases, sales, projections, employee workflows, and reporting. It combines a browser application, domain services, event-driven workers, and infrastructure managed as code.
+This case study describes a multi-location restaurant operations platform.
 
-```mermaid
-flowchart LR
-  Staff --> Web[Angular application]
-  Web --> API[Private API entry]
-  API --> Java[Spring Boot services on ECS]
-  API --> Lambda[Node.js Lambda services]
-  Java --> DB[(MySQL)]
-  Lambda --> Queue[SQS and EventBridge]
-  Queue --> Lambda
-```
+It supports routine work across inventory, cash, sales, people, events, and reporting.
 
-The system is a team effort. This case study describes its architecture at a useful level without exposing customer identifiers, credentials, internal endpoints, or API contracts.
+Store teams use a shared Angular application.
+
+Java services own many transactional domains.
+
+TypeScript Lambda functions cover focused APIs and event-driven work.
+
+Terraform provisions the platform infrastructure across four stages.
+
+The product was built by a cross-functional team of about 15 contributors.
+
+The system grew through roughly 3,700 commits from December 2023 through March 2025.
+
+## Product scope
+
+Inventory includes daily counts, movements, transfers, waste, purchases, and closeouts.
+
+Cash includes registers, audits, reconciliations, safe control, and deposits.
+
+Sales screens show point-of-sale and consolidated results.
+
+Projections include history and a review workflow.
+
+Recipe data supports production planning.
+
+Event planning connects customers, venues, schedules, and contracts.
+
+Administration maintains shared store and product data.
+
+Employee and task workflows support daily store routines.
+
+Reporting embeds Superset dashboards with user-level row security.
+
+See [Product areas](/docs/product/) for the module overview.
+
+## Application layers
+
+The Angular frontend uses feature folders and lazy routes.
+
+Java services are built with Spring Boot and run as containers on ECS Fargate.
+
+Java services expose about 150 REST endpoints across 14 services.
+
+Service-to-service HTTP calls use configured Feign clients.
+
+TypeScript Lambda services use Serverless Framework.
+
+The Lambda services expose about 65 handlers across API and event workloads.
+
+SQS buffers asynchronous tasks and EventBridge starts schedules and routes events.
+
+RDS MySQL stores relational business records.
+
+DynamoDB backs selected platform APIs.
+
+CloudFront and S3 distribute the Angular application.
+
+## User and service access
+
+Cognito supports user identity and signup flows.
+
+Email MFA is delivered through queued processing.
+
+An operational PIN confirms selected store actions.
+
+API Gateway uses a custom authorizer on protected routes.
+
+VPC Link forwards container-bound requests to the private load balancer.
+
+Machine-to-machine clients use an OAuth2 service and configured scopes.
+
+Role permissions gate user actions in the application.
+
+Embedded analytics uses guest tokens and row-level security.
+
+See [Identity and security](/docs/security/) for the access layers.
+
+## Event and data flow
+
+User requests reach API Gateway and are routed to a domain service.
+
+Scheduled inventory work starts from EventBridge.
+
+Cash and notification workflows can use queue-backed processing.
+
+Projection review is recorded through a state transition.
+
+PDF reports support cash collection and reconciliation records.
+
+Translation bundles are stored in S3 and served by a Lambda API.
+
+CloudWatch APIs accept application events and metrics.
+
+See [Key operational flows](/docs/flows/) for sequence diagrams.
+
+## Engineering and delivery
+
+The workspace combines Angular, Java, TypeScript, and Terraform projects.
+
+Shared libraries and generators keep common project setup consistent.
+
+The codebase includes about 157 frontend and TypeScript specs.
+
+It also includes 23 Java test classes.
+
+Husky runs lint at pre-commit and tests at pre-push.
+
+Pull request templates and SonarQube support review.
+
+Renovate keeps dependency updates visible.
+
+GitHub Actions releases dependencies and services in order.
+
+The release path covers four Terraform stages: dev, QA, UAT, and master.
+
+## Local development
+
+Docker Compose provides MySQL, local Cognito, LocalStack, ElasticMQ, and Superset.
+
+Developers can run the Angular frontend alongside the local service environment.
+
+Mocked browser sessions can be used for isolated UI review.
+
+The local setup avoids connecting the screenshots in this case study to a live backend.
+
+See [Local development](/docs/local-development/) for service responsibilities.
+
+## Documentation map
+
+[Frontend](/docs/frontend/) covers features, routing, translations, and reporting embeds.
+
+[Java services](/docs/java-services/) lists domain ownership and service calls.
+
+[Serverless](/docs/serverless/) describes the Lambda apps and their triggers.
+
+[Infrastructure](/docs/infrastructure/) lists reusable Terraform modules and stages.
+
+[CI/CD](/docs/ci-cd/) covers workflow triggers and release order.
+
+[Architecture decisions](/docs/decisions/) records the context and trade-offs.
+
+The documentation uses product-level descriptions rather than private resource names.
+
+It avoids account identifiers, ARNs, private endpoints, and customer-specific acronyms.
+
+The interface and documentation support English and Spanish.

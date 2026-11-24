@@ -1,0 +1,76 @@
+---
+import type { Lang, LandingCopy } from '../../data/landing';
+
+const { lang, data } = Astro.props as { lang: Lang; data: LandingCopy };
+const labels = lang === 'es'
+  ? { browser: 'Equipo de tienda', app: 'Angular SPA', edge: 'CloudFront', web: 'S3 aplicación', cognito: 'Cognito', api: 'API Gateway', auth: 'Authorizer propio', vpc: 'VPC Link', alb: 'ALB privado', ecs: 'ECS Fargate', java: 'Inventario · Compras · Caja · Proyecciones · Admin', lambdas: 'Lambdas por dominio', identity: 'Identidad · Eventos · Plataforma · Caja', mysql: 'RDS MySQL', dynamo: 'DynamoDB', events: 'EventBridge', queue: 'SQS', mail: 'SES', documents: 'S3 traducciones y PDFs', dashboards: 'Superset', sync: 'Solicitud síncrona', async: 'Trabajo asíncrono' }
+  : { browser: 'Store teams', app: 'Angular SPA', edge: 'CloudFront', web: 'S3 application', cognito: 'Cognito', api: 'API Gateway', auth: 'Custom authorizer', vpc: 'VPC Link', alb: 'Private ALB', ecs: 'ECS Fargate', java: 'Inventory · Purchases · Cash · Projections · Admin', lambdas: 'Domain Lambdas', identity: 'Identity · Events · Platform · Cash', mysql: 'RDS MySQL', dynamo: 'DynamoDB', events: 'EventBridge', queue: 'SQS', mail: 'SES', documents: 'S3 translations and PDFs', dashboards: 'Superset', sync: 'Synchronous request', async: 'Asynchronous work' };
+---
+
+<figure class="architecture-figure" aria-labelledby="architecture-caption">
+  <div class="diagram-scroll" tabindex="0" role="region" aria-label={data.diagramTitle}>
+    <svg viewBox="0 0 1180 760" role="img" aria-labelledby="diagram-title diagram-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="diagram-title">{data.diagramTitle}</title>
+      <desc id="diagram-desc">{data.diagramDescription}</desc>
+      <defs>
+        <marker id="arrow-sync" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L8 4 0 8z" class="arrow-sync" /></marker>
+        <marker id="arrow-async" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L8 4 0 8z" class="arrow-async" /></marker>
+      </defs>
+
+      <text class="diagram-region" x="28" y="30">{lang === 'es' ? 'PRESENTACIÓN' : 'PRESENTATION'}</text>
+      <text class="diagram-region" x="28" y="248">{lang === 'es' ? 'RUTA DE SOLICITUDES' : 'REQUEST PATH'}</text>
+      <text class="diagram-region" x="28" y="518">{lang === 'es' ? 'EVENTOS Y DATOS' : 'EVENTS AND DATA'}</text>
+
+      <path class="edge edge-sync" d="M142 88H204" marker-end="url(#arrow-sync)" />
+      <path class="edge edge-sync" d="M344 88H404" marker-end="url(#arrow-sync)" />
+      <path class="edge edge-sync" d="M474 122V268H186V302" marker-end="url(#arrow-sync)" />
+      <path class="edge edge-sync" d="M344 340H404" marker-end="url(#arrow-sync)" />
+      <path class="edge edge-sync" d="M544 340H604" marker-end="url(#arrow-sync)" />
+      <path class="edge edge-sync" d="M744 340H804" marker-end="url(#arrow-sync)" />
+      <path class="edge edge-sync" d="M944 340H1004" marker-end="url(#arrow-sync)" />
+      <path class="edge edge-sync" d="M874 374V428H954" marker-end="url(#arrow-sync)" />
+      <path class="edge edge-sync" d="M944 340V468H1044" marker-end="url(#arrow-sync)" />
+      <path class="edge edge-sync" d="M344 340V476H186V526" marker-end="url(#arrow-sync)" />
+
+      <path class="edge edge-async" d="M544 340V548H186V576" marker-end="url(#arrow-async)" />
+      <path class="edge edge-async" d="M344 594H404" marker-end="url(#arrow-async)" />
+      <path class="edge edge-async" d="M544 594H604" marker-end="url(#arrow-async)" />
+      <path class="edge edge-async" d="M744 594H804" marker-end="url(#arrow-async)" />
+      <path class="edge edge-async" d="M874 622V684H954" marker-end="url(#arrow-async)" />
+      <path class="edge edge-async" d="M944 594H1004" marker-end="url(#arrow-async)" />
+
+      <g class="diagram-node node-edge"><rect x="24" y="54" width="118" height="68" rx="14"/><text x="83" y="84">{labels.browser}</text><text class="node-sub" x="83" y="105">{lang === 'es' ? 'Angular' : 'Browser'}</text></g>
+      <g class="diagram-node node-edge"><rect x="204" y="54" width="140" height="68" rx="14"/><text x="274" y="84">{labels.edge}</text><text class="node-sub" x="274" y="105">{labels.app}</text></g>
+      <g class="diagram-node node-data"><rect x="404" y="54" width="140" height="68" rx="14"/><text x="474" y="84">{labels.web}</text><text class="node-sub" x="474" y="105">{lang === 'es' ? 'Archivos estáticos' : 'Static assets'}</text></g>
+
+      <g class="diagram-node node-identity"><rect x="24" y="302" width="160" height="76" rx="14"/><text x="104" y="334">{labels.api}</text><text class="node-sub" x="104" y="356">{labels.auth}</text></g>
+      <g class="diagram-node node-compute"><rect x="204" y="302" width="140" height="76" rx="14"/><text x="274" y="334">{labels.vpc}</text><text class="node-sub" x="274" y="356">{lang === 'es' ? 'Ruta privada' : 'Private route'}</text></g>
+      <g class="diagram-node node-edge"><rect x="404" y="302" width="140" height="76" rx="14"/><text x="474" y="334">{labels.alb}</text><text class="node-sub" x="474" y="356">{labels.ecs}</text></g>
+      <g class="diagram-node node-compute"><rect x="604" y="302" width="140" height="76" rx="14"/><text x="674" y="334">{lang === 'es' ? 'Servicios Java' : 'Java services'}</text><text class="node-sub" x="674" y="356">Spring Boot</text></g>
+      <g class="diagram-node node-compute"><rect x="804" y="302" width="140" height="76" rx="14"/><text x="874" y="334">{labels.ecs}</text><text class="node-sub" x="874" y="356">{labels.java}</text></g>
+      <g class="diagram-node node-data"><rect x="1004" y="302" width="140" height="76" rx="14"/><text x="1074" y="334">{labels.mysql}</text><text class="node-sub" x="1074" y="356">{lang === 'es' ? 'Datos relacionales' : 'Relational data'}</text></g>
+      <g class="diagram-node node-identity"><rect x="24" y="430" width="160" height="76" rx="14"/><text x="104" y="462">{labels.cognito}</text><text class="node-sub" x="104" y="484">{lang === 'es' ? 'Login y MFA' : 'Login and MFA'}</text></g>
+      <g class="diagram-node node-compute"><rect x="954" y="404" width="190" height="76" rx="14"/><text x="1049" y="436">{labels.lambdas}</text><text class="node-sub" x="1049" y="458">{labels.identity}</text></g>
+
+      <g class="diagram-node node-event"><rect x="24" y="558" width="160" height="72" rx="14"/><text x="104" y="588">{labels.events}</text><text class="node-sub" x="104" y="609">{lang === 'es' ? 'Schedule y eventos' : 'Schedule and events'}</text></g>
+      <g class="diagram-node node-event"><rect x="204" y="558" width="140" height="72" rx="14"/><text x="274" y="588">{labels.queue}</text><text class="node-sub" x="274" y="609">{lang === 'es' ? 'Mensajes y reintentos' : 'Messages and retries'}</text></g>
+      <g class="diagram-node node-compute"><rect x="404" y="558" width="140" height="72" rx="14"/><text x="474" y="588">{lang === 'es' ? 'Handlers de eventos' : 'Event handlers'}</text><text class="node-sub" x="474" y="609">{lang === 'es' ? 'Node y TypeScript' : 'Node and TypeScript'}</text></g>
+      <g class="diagram-node node-data"><rect x="604" y="558" width="140" height="72" rx="14"/><text x="674" y="588">{labels.dynamo}</text><text class="node-sub" x="674" y="609">{lang === 'es' ? 'APIs de plataforma' : 'Platform APIs'}</text></g>
+      <g class="diagram-node node-event"><rect x="804" y="558" width="140" height="72" rx="14"/><text x="874" y="588">{labels.mail}</text><text class="node-sub" x="874" y="609">{lang === 'es' ? 'Correo transaccional' : 'Transactional email'}</text></g>
+      <g class="diagram-node node-data"><rect x="1004" y="558" width="140" height="72" rx="14"/><text x="1074" y="588">{labels.documents}</text><text class="node-sub" x="1074" y="609">{lang === 'es' ? 'Archivos y textos' : 'Files and copy'}</text></g>
+      <g class="diagram-node node-analytics"><rect x="954" y="656" width="190" height="72" rx="14"/><text x="1049" y="686">{labels.dashboards}</text><text class="node-sub" x="1049" y="707">{lang === 'es' ? 'Dashboards embebidos' : 'Embedded dashboards'}</text></g>
+
+      <g class="diagram-legend" transform="translate(590 56)">
+        <line class="edge edge-sync" x1="0" y1="8" x2="40" y2="8" />
+        <text x="50" y="13">{labels.sync}</text>
+        <line class="edge edge-async" x1="0" y1="34" x2="40" y2="34" />
+        <text x="50" y="39">{labels.async}</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption id="architecture-caption">{data.diagramTitle}</figcaption>
+  <details class="architecture-list">
+    <summary>{data.diagramListTitle}</summary>
+    <ol>{data.diagramList.map((item) => <li>{item}</li>)}</ol>
+  </details>
+</figure>

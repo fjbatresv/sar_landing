@@ -1,0 +1,28 @@
+:root {
+  --sl-font: var(--font-body), Arial, sans-serif;
+  --sl-font-system: var(--font-body), Arial, sans-serif;
+  --sl-color-accent-low: #f0f0ff;
+  --sl-color-accent: #4c52cf;
+  --sl-color-accent-high: #292b55;
+  --sl-color-text-accent: #4c52cf;
+  --sl-color-bg: #f7f7f9;
+  --sl-color-bg-nav: #141633;
+  --sl-color-bg-sidebar: #f7f7f9;
+  --sl-color-hairline: #e1e3eb;
+  --sl-color-hairline-shade: #c2c4d1;
+}
+
+:root[data-theme='dark'] {
+  --sl-color-accent-low: #292b55;
+  --sl-color-accent: #a3a7ff;
+  --sl-color-accent-high: #f0f0ff;
+  --sl-color-text-accent: #a3a7ff;
+  --sl-color-bg: #141633;
+  --sl-color-bg-nav: #141633;
+  --sl-color-bg-sidebar: #191b3a;
+  --sl-color-hairline: #3c3f62;
+  --sl-color-hairline-shade: #4d5073;
+}
+
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-display), var(--font-body), Arial, sans-serif; }
+sl-markdown-content a { text-underline-offset: .2em; }

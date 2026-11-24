@@ -1,4 +1,41 @@
 ---
-const { title, events } = Astro.props;
+import type { Lang, Moment } from '../../data/landing';
+const { lang, title, intro, moments } = Astro.props as { lang: Lang; title: string; intro: string; moments: Moment[] };
 ---
-<section class="day wrap" id="day" aria-labelledby="day-title"><h2 id="day-title">{title}</h2><ol class="timeline">{events.map(([time, label, system]) => <li><a href={time === '06:00' ? '#architecture' : time === '22:00' ? '#decisions' : '#stack'}><time>{time}</time><span class="marker" aria-hidden="true"></span><strong>{label}</strong><small>{system}</small></a></li>)}</ol></section>
+
+<section class="day wrap" id="day" aria-labelledby="day-title">
+  <div class="section-heading day-heading">
+    <h2 id="day-title">{title}</h2>
+    <p>{intro}</p>
+  </div>
+  <ol class="timeline">
+    {moments.map((moment, index) => (
+      <li class={`moment moment-${index + 1}`}>
+        <details>
+          <summary>
+            <time>{moment.time}</time>
+            <span class="moment-marker" aria-hidden="true"></span>
+            <span class="moment-label">{moment.title}</span>
+            <span class="moment-module">{moment.module}</span>
+            <span class="material-symbols-outlined moment-chevron" aria-hidden="true">expand_more</span>
+          </summary>
+          <div class="moment-detail">
+            <p>{moment.operation}</p>
+            <p>{moment.system}</p>
+            <p class="moment-tech">{moment.technology}</p>
+            <a href={`#screen-${moment.screen}`}>{lang === 'es' ? 'Ver captura del flujo' : 'View the related screen'}</a>
+          </div>
+        </details>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLSummaryElement>('.timeline summary').forEach((summary) => {
+    summary.addEventListener('focus', () => {
+      const details = summary.parentElement;
+      if (details instanceof HTMLDetailsElement) details.open = true;
+    });
+  });
+</script>

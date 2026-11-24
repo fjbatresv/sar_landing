@@ -5,6 +5,7 @@ import sharp from 'sharp';
 const roots = ['src', 'public', 'dist'];
 const forbidden = [
   /mcdgt/i, /back0ffice/i, /sarcbo/i, /sarbo/i, /cognits/i, /mcdonald/i, /arcos/i,
+  /\b(?:SMI|BMI|PIM|STLD|SOS)\b/i,
   /arn:aws/i, /amazonaws\.com/i,
   /\b\d{12}\b/,
   /\b(?:10\.(?:\d{1,3}\.){2}\d{1,3}|192\.168\.(?:\d{1,3}\.){1}\d{1,3}|172\.(?:1[6-9]|2\d|3[01])\.(?:\d{1,3}\.)\d{1,3})\b/,
