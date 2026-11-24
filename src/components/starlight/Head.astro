@@ -1,0 +1,18 @@
+---
+const route = Astro.locals.starlightRoute;
+const is404 = route.entry.id === '404';
+const head = is404 ? route.head.filter(({ tag, attrs }) => !(tag === 'link' && attrs?.rel === 'canonical')) : route.head;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const site = Astro.site!;
+const abs = (path: string) => new URL(`${base}${path.replace(/^\//, '')}`, site).href;
+const image = abs('assets/og-sar.png');
+const url = new URL(Astro.url.pathname, site).href;
+const title = route.entry.data.title;
+const schema = is404 ? null : { '@context': 'https://schema.org', '@graph': [
+  { '@type': 'TechArticle', headline: title, description: route.entry.data.description, url, inLanguage: 'en', image, author: { '@type': 'Person', name: 'Javier Batres', url: 'https://fjbatresv.com' }, isPartOf: { '@type': 'WebSite', name: 'SAR architecture case study', url: abs('/') } },
+  { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: abs('/') }, { '@type': 'ListItem', position: 2, name: 'Docs', item: abs('docs/') }, ...(route.entry.id === 'docs' ? [] : [{ '@type': 'ListItem', position: 3, name: title, item: url }])] },
+] };
+---
+{head.map(({ tag: Tag, attrs, content }) => <Tag {...attrs} set:html={content} />)}
+{is404 && <meta name="robots" content="noindex" />}
+{!is404 && <><meta property="og:image" content={image} /><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" /><meta property="og:image:alt" content="Restaurant operations architecture overview" /><meta name="twitter:card" content="summary_large_image" /><script type="application/ld+json" set:html={JSON.stringify(schema)} /></>}

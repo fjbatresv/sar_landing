@@ -1,0 +1,12 @@
+{
+  "skipLink.label": "Skip to content",
+  "search.label": "Search documentation",
+  "search.cancelLabel": "Cancel",
+  "themeSelect.accessibleLabel": "Theme",
+  "themeSelect.dark": "Dark",
+  "themeSelect.light": "Light",
+  "themeSelect.auto": "Auto",
+  "tableOfContents.onThisPage": "On this page",
+  "tableOfContents.overview": "Overview",
+  "404.text": "Page not found. Check the URL or return to the case study."
+}

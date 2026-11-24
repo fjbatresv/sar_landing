@@ -1,0 +1,7 @@
+---
+import Landing from '../../layouts/Landing.astro';
+import Portfolio from '../../components/landing/Portfolio.astro';
+import { copy } from '../../data/landing';
+const data = copy.es;
+---
+<Landing lang="es" title={data.title} description={data.description}><Portfolio lang="es" data={data} /></Landing>

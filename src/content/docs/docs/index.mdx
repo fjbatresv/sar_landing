@@ -1,0 +1,21 @@
+---
+title: System overview
+description: A high-level view of a restaurant operations platform and its service boundaries.
+---
+
+## A platform for daily operations
+
+The system supports inventory counts and closeouts, purchases, sales, projections, employee workflows, and reporting. It combines a browser application, domain services, event-driven workers, and infrastructure managed as code.
+
+```mermaid
+flowchart LR
+  Staff --> Web[Angular application]
+  Web --> API[Private API entry]
+  API --> Java[Spring Boot services on ECS]
+  API --> Lambda[Node.js Lambda services]
+  Java --> DB[(MySQL)]
+  Lambda --> Queue[SQS and EventBridge]
+  Queue --> Lambda
+```
+
+The system is a team effort. This case study describes its architecture at a useful level without exposing customer identifiers, credentials, internal endpoints, or API contracts.

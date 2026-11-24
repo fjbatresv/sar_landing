@@ -1,0 +1,4 @@
+---
+const { title, events } = Astro.props;
+---
+<section class="day wrap" id="day" aria-labelledby="day-title"><h2 id="day-title">{title}</h2><ol class="timeline">{events.map(([time, label, system]) => <li><a href={time === '06:00' ? '#architecture' : time === '22:00' ? '#decisions' : '#stack'}><time>{time}</time><span class="marker" aria-hidden="true"></span><strong>{label}</strong><small>{system}</small></a></li>)}</ol></section>

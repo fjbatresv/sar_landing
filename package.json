@@ -1,0 +1,1 @@
+{"name":"sar-case-study","private":true,"version":"1.0.0","type":"module","scripts":{"build":"astro build","dev":"astro dev","preview":"astro preview"},"dependencies":{"@astrojs/sitemap":"^3.6.0","@astrojs/starlight":"^0.43.1","astro":"^7.4.13"},"devDependencies":{"playwright":"^1.65.1","sharp":"^0.35.5"}}
